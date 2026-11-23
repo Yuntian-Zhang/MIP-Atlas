@@ -92,7 +92,7 @@ export default function App() {
         </div>
         <div className="topbar-right">
           <span className="status-dot" /> LOCAL ANALYSIS
-          <a href="https://github.com/Yuntian-Zhang" target="_blank" rel="noreferrer" className="github-link">GitHub ↗</a>
+          <a href="https://github.com/Yuntian-Zhang/MIP-Atlas" target="_blank" rel="noreferrer" className="github-link">GitHub ↗</a>
         </div>
       </header>
 
@@ -156,7 +156,7 @@ export default function App() {
               <g className="equation-card" transform="rotate(-8 180 120)">
                 <rect x="130" y="80" width="100" height="80" rx="23" fill="url(#equation-card)" />
                 <rect x="130.5" y="80.5" width="99" height="79" rx="22.5" className="equation-card-border" />
-                <text x="182" y="132" textAnchor="middle" className="equation-text">
+                <text x="180" y="132" textAnchor="middle" className="equation-text">
                   <tspan>Ax</tspan><tspan className="equation-accent"> ≥ b</tspan>
                 </text>
               </g>
