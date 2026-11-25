@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { WheelEvent } from "react";
 import { getMatrixOrdering, type ReorderMode } from "../lib/analysis";
 import type { MatrixEntry, OptimizationModel } from "../lib/types";
 
@@ -247,24 +246,31 @@ export default function MatrixView({ model, selected, onSelect }: Props) {
     return entryLookup.get(`${originalRow}:${originalCol}`) ?? null;
   };
 
-  const handleWheel = (event: WheelEvent<HTMLCanvasElement>) => {
-    event.preventDefault();
-    const factor = event.deltaY < 0 ? 1.15 : 1 / 1.15;
+  useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const bounds = canvas.getBoundingClientRect();
-    const anchorX = event.clientX - bounds.left - MARGIN.left;
-    const anchorY = event.clientY - bounds.top - MARGIN.top;
-    setViewport((current) => {
-      const nextScale = Math.min(24, Math.max(0.65, current.scale * factor));
-      const ratio = nextScale / current.scale;
-      return {
-        scale: nextScale,
-        x: anchorX - (anchorX - current.x) * ratio,
-        y: anchorY - (anchorY - current.y) * ratio,
-      };
-    });
-  };
+
+    const handleWheel = (event: WheelEvent) => {
+      event.preventDefault();
+      if (event.deltaY === 0) return;
+      const factor = event.deltaY < 0 ? 1.15 : 1 / 1.15;
+      const bounds = canvas.getBoundingClientRect();
+      const anchorX = event.clientX - bounds.left - MARGIN.left;
+      const anchorY = event.clientY - bounds.top - MARGIN.top;
+      setViewport((current) => {
+        const nextScale = Math.min(24, Math.max(0.65, current.scale * factor));
+        const ratio = nextScale / current.scale;
+        return {
+          scale: nextScale,
+          x: anchorX - (anchorX - current.x) * ratio,
+          y: anchorY - (anchorY - current.y) * ratio,
+        };
+      });
+    };
+
+    canvas.addEventListener("wheel", handleWheel, { passive: false });
+    return () => canvas.removeEventListener("wheel", handleWheel);
+  }, []);
 
   const changeOrder = (nextMode: ReorderMode) => {
     setOrderMode(nextMode);
@@ -297,7 +303,6 @@ export default function MatrixView({ model, selected, onSelect }: Props) {
         ref={canvasRef}
         className="matrix-canvas"
         aria-label="Interactive constraint matrix sparsity pattern"
-        onWheel={handleWheel}
         onPointerDown={(event) => {
           draggedRef.current = false;
           dragRef.current = {

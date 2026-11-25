@@ -1,5 +1,7 @@
+/// <reference types="vite/client" />
 import { useMemo, useRef, useState } from "react";
 import MatrixView from "./components/MatrixView";
+import exampleMps from "../examples/b1c1s1.mps?raw";
 import { findComponents, getStatistics } from "./lib/analysis";
 import { parseMps } from "./lib/mps";
 import type { MatrixEntry, OptimizationModel } from "./lib/types";
@@ -15,34 +17,6 @@ function formatBound(value: number): string {
 function formatCoefficient(value: number | null): string {
   return value === null ? "—" : numberFormat.format(value);
 }
-
-const exampleMps = `NAME          TOY_NETWORK
-OBJSENSE
- MIN
-ROWS
- N  COST
- L  CAP_A
- G  DEMAND_B
- E  BALANCE_C
-COLUMNS
- X_1       COST      2       CAP_A      1
- X_1       BALANCE_C 1
- X_2       COST      3       CAP_A      1
- X_2       DEMAND_B  1
- X_3       COST      1       DEMAND_B  1
- X_3       BALANCE_C -1
- X_4       COST      4       BALANCE_C 1
-RHS
- RHS1      CAP_A     10      DEMAND_B   4
- RHS1      BALANCE_C 0
-BOUNDS
- BV BND1   X_1
- LO BND1   X_2       0
- UP BND1   X_2       8
- BV BND1   X_3
- UP BND1   X_4       5
-ENDATA
-`;
 
 export default function App() {
   const fileInput = useRef<HTMLInputElement>(null);
@@ -185,7 +159,7 @@ export default function App() {
               onChange={(event) => void handleFile(event.target.files?.[0])}
             />
             <div className="upload-footnote">MPS format · processed locally in your browser · max 30 MB</div>
-            <button className="text-button" onClick={() => loadText(exampleMps, "toy_network.mps")}>Load a sample model instead →</button>
+            <button className="text-button" onClick={() => loadText(exampleMps, "b1c1s1.mps")}>Load a sample model instead →</button>
           </section>
         ) : (
           <>

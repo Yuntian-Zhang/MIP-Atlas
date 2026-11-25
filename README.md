@@ -11,7 +11,7 @@
 
 An interactive, browser-based explorer for mathematical optimization models.
 
-[**🚀 Launch MIP-Atlas**](https://yuntian-zhang.github.io/MIP-Atlas/) · [Example Model](examples/toy_network.mps) · [Report an Issue](https://github.com/Yuntian-Zhang/MIP-Atlas/issues)
+[**🚀 Launch MIP-Atlas**](https://yuntian-zhang.github.io/MIP-Atlas/) · [Example Model](examples/b1c1s1.mps) · [Report an Issue](https://github.com/Yuntian-Zhang/MIP-Atlas/issues)
 
 </div>
 
@@ -50,6 +50,8 @@ New ordering algorithms, decomposition methods, and literature contributions are
 ## 🚀 Quick Start
 
 Open [MIP-Atlas](https://yuntian-zhang.github.io/MIP-Atlas/), drop in an `.mps` file, or load the built-in sample model. Explore the matrix, click any nonzero coefficient, and switch reordering modes to uncover its structure.
+
+The built-in example is [b1c1s1](https://miplib.zib.de/instance_details_b1c1s1.html), a lot-sizing instance from MIPLIB 2017.
 
 To run locally (Node.js 22 recommended):
 
