@@ -195,19 +195,26 @@ export default function MatrixView({ model, selected, onSelect }: Props) {
     ctx.textAlign = "left";
     ctx.fillText(`${colCount.toLocaleString()} cols`, left, top - 18);
 
-    ctx.fillStyle = "#38bdf8";
-    ctx.beginPath();
-    ctx.arc(width - 138, 18, 3.5, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = "#b4c4da";
-    ctx.font = "12px 'DM Mono', ui-monospace, monospace";
-    ctx.fillText("Positive", width - 128, 18);
-    ctx.fillStyle = "#fb923c";
-    ctx.beginPath();
-    ctx.arc(width - 66, 18, 3.5, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = "#b4c4da";
-    ctx.fillText("Negative", width - 56, 18);
+    // Right-align the legend to the plot edge, using measured text widths.
+    const legendRight = width - right;
+    const markerOffset = 10;
+    const legendGap = 16;
+    const negativeX = legendRight - ctx.measureText("Negative").width;
+    const positiveX = negativeX - markerOffset - legendGap - ctx.measureText("Positive").width;
+    const countRight = left + ctx.measureText(`${colCount.toLocaleString()} cols`).width;
+    const legendY = positiveX - markerOffset - 4 < countRight + 8 ? 10 : 18;
+
+    const drawLegendItem = (label: string, color: string, x: number) => {
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(x - markerOffset, legendY, 3.5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = "#b4c4da";
+      ctx.fillText(label, x, legendY);
+    };
+
+    drawLegendItem("Positive", "#38bdf8", positiveX);
+    drawLegendItem("Negative", "#fb923c", negativeX);
   }, [
     model,
     viewport,
